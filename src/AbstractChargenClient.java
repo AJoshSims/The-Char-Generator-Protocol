@@ -1,5 +1,41 @@
+import java.io.PrintStream;
+import java.net.InetAddress;
+
 /**
- * Created by Evan on 10/24/2016.
+ * @author Evan Arroyo
+ * @author Joshua Sims
+ *
+ * @version 10-24-16
+ *
  */
-public class AbstractChargenClient {
+
+public class AbstractChargenClient implements ChargenClient {
+
+    private InetAddress host;
+    private int port;
+
+    public AbstractChargenClient(){
+
+    }
+
+    public AbstractChargenClient(InetAddress host){
+
+    }
+
+    public AbstractChargenClient(InetAddress host, int port){
+
+    }
+
+    public InetAddress getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    @Override
+    public void printToStream(PrintStream out) {
+
+    }
 }

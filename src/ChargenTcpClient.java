@@ -1,5 +1,16 @@
+import java.io.PrintStream;
+
 /**
- * Created by Evan on 10/24/2016.
+ * @author Evan Arroyo
+ * @author Joshua Sims
+ *
+ * @version 10-24-16
+ *
  */
-public class ChargenTcpClient {
+
+public class ChargenTcpClient extends AbstractChargenClient{
+
+    public void printToStream(PrintStream out){
+
+    }
 }
