@@ -1,6 +1,7 @@
 import java.io.PrintStream;
 import java.net.InetAddress;
 
+
 /**
  * @author Evan Arroyo
  * @author Joshua Sims
@@ -12,6 +13,7 @@ import java.net.InetAddress;
 public class AbstractChargenClient implements ChargenClient {
 
     private InetAddress host;
+
     private int port;
 
     public AbstractChargenClient(){
