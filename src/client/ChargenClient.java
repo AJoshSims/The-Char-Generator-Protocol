@@ -13,5 +13,5 @@ import java.io.PrintStream;
 
 interface ChargenClient 
 {
-    void printToStream(PrintStream out);
+   public void printToStream(PrintStream out);
 }
