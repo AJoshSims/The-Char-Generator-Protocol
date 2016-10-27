@@ -1,6 +1,7 @@
 package client;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import common.InvalidNumOfArgsException;
 import common.InvalidPortException;
@@ -129,20 +130,25 @@ public class ChargenClientDriver
     	final String port = examinedArgs[INDEX_OF_PORT];
     	final String flag = examinedArgs[INDEX_OF_FLAG];
     	
-    	// TODO May need a try catch block here
-    	ChargenClient chargenClient = null;
-    	switch (transProtocol)
-    	{
-    		case "UDP":
-    			chargenClient = new ChargenUdpClient(
-    					InetAddress.getByName(host), 		
-    					Integer.parseInt(port));
-    			break;
-    		case "TCP":
-    			chargenClient = new ChargenTcpClient(
-    					InetAddress.getByName(host), 
-    					Integer.parseInt(port));
-    	}
+    	// TODO May need a try catch block here EVAN: Added Try catch block for unknown
+		// TODO host exception. Throwing error at lines 140, 146, and 147
+
+		try {
+			ChargenClient chargenClient = null;
+			switch (transProtocol) {
+				case "UDP":
+					chargenClient = new ChargenUdpClient(
+							InetAddress.getByName(host),
+							Integer.parseInt(port));
+					break;
+				case "TCP":
+					chargenClient = new ChargenTcpClient(
+							InetAddress.getByName(host),
+							Integer.parseInt(port));
+			}
+		}catch(UnknownHostException e){
+			System.out.println("Unknown Host Exception");
+		}
     }
     
     /**

@@ -18,6 +18,10 @@ abstract class AbstractChargenClient implements ChargenClient
 
     private int port;
 
+    protected AbstractChargenClient(){
+
+    }
+
     protected AbstractChargenClient(InetAddress host)
     {
     	this(host, ChargenClientDriver.CHARGEN_PORT_NUM);
