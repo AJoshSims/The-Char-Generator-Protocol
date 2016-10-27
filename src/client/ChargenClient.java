@@ -1,14 +1,17 @@
+package client;
 import java.io.PrintStream;
 
 /**
+ * 
+ * 
  * @author Evan Arroyo
  * @author Joshua Sims
  *
- * @version 10-24-16
+ * @version 24 October 2016
  *
  */
 
-public interface ChargenClient {
-
+interface ChargenClient 
+{
     void printToStream(PrintStream out);
 }
