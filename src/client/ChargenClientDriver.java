@@ -1,5 +1,6 @@
 package client;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -32,6 +33,25 @@ public class ChargenClientDriver
 	 * line.
 	 */
 	private static final int INVALID_PORT_NUMBER = 2;
+	
+	/**
+	 * Error code indicating an IO exception occurred during the 
+	 * creation/management of the client to server resources.
+	 */
+	private static final int IO_EXCEPTION = 3;
+	
+	/**
+	 * Error code indicating that the IP address of the server could not be
+	 * determined.
+	 */
+	private static final int UNKNOWN_HOST_EXCEPTION = 4;
+	
+	/**
+	 * Error code indicating that the security manager has thrown an exception
+	 * to indicate that a security violation has arisen from the attempt to 
+	 * create the socket.
+	 */
+	private static final int SECURITY_EXCEPTION = 5;
 	
 	// Port number information
 	/**
@@ -117,7 +137,6 @@ public class ChargenClientDriver
     		printUsageAndAbortMessage();
     		System.exit(INVALID_NUM_OF_ARGS);
     	}
-    	
     	catch (InvalidPortException e)
     	{
     		System.out.println(e.getMessage());
@@ -129,26 +148,44 @@ public class ChargenClientDriver
     	final String host = examinedArgs[INDEX_OF_HOST];
     	final String port = examinedArgs[INDEX_OF_PORT];
     	final String flag = examinedArgs[INDEX_OF_FLAG];
-    	
-    	// TODO May need a try catch block here EVAN: Added Try catch block for unknown
-		// TODO host exception. Throwing error at lines 140, 146, and 147
 
-		try {
-			ChargenClient chargenClient = null;
-			switch (transProtocol) {
-				case "UDP":
-					chargenClient = new ChargenUdpClient(
-							InetAddress.getByName(host),
-							Integer.parseInt(port));
-					break;
-				case "TCP":
-					chargenClient = new ChargenTcpClient(
-							InetAddress.getByName(host),
-							Integer.parseInt(port));
-			}
-		}catch(UnknownHostException e){
-			System.out.println("Unknown Host Exception");
-		}
+    	try
+    	{
+	    	ChargenClient chargenClient = null;
+	    	switch (transProtocol)
+	    	{
+	    		case "TCP":
+	    			chargenClient = new ChargenTcpClient(
+	    				InetAddress.getByName(host), 
+	    				Integer.parseInt(port));
+	    			break;
+	    		case "UDP":
+	    			chargenClient = new ChargenUdpClient(
+	    					InetAddress.getByName(host), 		
+	    					Integer.parseInt(port));
+	    	}
+    	}
+    	
+        // The IP address of the server could not be determined.
+        catch (UnknownHostException e) 
+        {
+            System.err.println("The IP address of the specified host " +
+        		"could not be determined.");
+            System.exit(UNKNOWN_HOST_EXCEPTION);
+        } 
+        // An IO exception occurred during the creation of the 
+        // client to server communication resources.
+        catch (IOException e) 
+        {
+            System.err.println(e.getMessage());
+            System.exit(IO_EXCEPTION);
+        } 
+        // The security manager indicates that there is a security violation.
+        catch (SecurityException e)
+        {
+        	System.err.println(e.getMessage());
+        	System.exit(SECURITY_EXCEPTION);
+        }
     }
     
     /**

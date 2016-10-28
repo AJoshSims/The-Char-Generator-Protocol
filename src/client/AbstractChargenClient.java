@@ -12,11 +12,11 @@ import java.net.InetAddress;
  * @version 24 October 2016
  */
 
-abstract class AbstractChargenClient implements ChargenClient
+protected class AbstractChargenClient implements ChargenClient
 {
-    private InetAddress host;
+    protected InetAddress host;
 
-    private int port;
+    protected int port;
 
     protected AbstractChargenClient(){
 
@@ -43,7 +43,6 @@ abstract class AbstractChargenClient implements ChargenClient
         return port;
     }
 
-    @Override
     public void printToStream(PrintStream out)
     {
     	
