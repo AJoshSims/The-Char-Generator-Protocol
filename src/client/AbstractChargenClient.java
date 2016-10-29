@@ -38,6 +38,10 @@ abstract class AbstractChargenClient implements ChargenClient
     {
         return port;
     }
+    
+    public abstract void sendToHost(String flag);
 
     public abstract void printToStream(PrintStream out);
+    
+    public abstract void closeResources();
 }

@@ -52,6 +52,7 @@ class ChargenTcpClient extends AbstractChargenClient
      * 
      * @param flag -
      */
+	@Override
     public void sendToHost(String flag)
     {
     	toHost.print(flag + "\r\n");
@@ -88,7 +89,8 @@ class ChargenTcpClient extends AbstractChargenClient
     /**
      * 
      */
-    public void closeStreamsAndSocket()
+	@Override
+    public void closeResources()
     {
     	boolean retry = false;
     	do
