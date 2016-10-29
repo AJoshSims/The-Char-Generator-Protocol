@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 /**
  * @author Evan Arroyo
@@ -14,10 +15,17 @@ import java.net.DatagramSocket;
  */
 
 //TODO Errors on line 17 with AbstractChargenClient and line 26 with getHost() and getPort()
-public class ChargenUdpClient extends AbstractChargenClient {
-
-    public void printToStream(PrintStream out) {
-
+public class ChargenUdpClient extends AbstractChargenClient 
+{
+	public ChargenUdpClient(InetAddress host, int port)
+	{
+		super(host, port);
+	}
+	
+    public void printToStream(PrintStream out) 
+    {
+    	
+    	
         DatagramSocket sock = null;
         DatagramPacket packet;
 

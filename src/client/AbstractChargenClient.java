@@ -1,7 +1,7 @@
 package client;
+
 import java.io.PrintStream;
 import java.net.InetAddress;
-
 
 /**
  * 
@@ -14,31 +14,27 @@ import java.net.InetAddress;
 
 abstract class AbstractChargenClient implements ChargenClient
 {
-    protected InetAddress host;
+    private InetAddress host;
 
-    protected int port;
+    private int port;
 
-    protected AbstractChargenClient(){
-
-    }
-
-    protected AbstractChargenClient(InetAddress host)
+    public AbstractChargenClient(InetAddress host)
     {
     	this(host, ChargenClientDriver.CHARGEN_PORT_NUM);
     }
 
-    protected AbstractChargenClient(InetAddress host, int port)
+    public AbstractChargenClient(InetAddress host, int port)
     {
     	this.host = host;
     	this.port = port;
     }
 
-    protected InetAddress getHost()
+    public InetAddress getHost()
     {
         return host;
     }
 
-    protected int getPort()
+    public int getPort()
     {
         return port;
     }

@@ -179,7 +179,6 @@ public class ChargenClientDriver
     	final String port = examinedArgs[INDEX_OF_PORT];
     	final String flag = examinedArgs[INDEX_OF_FLAG];
     	
-    	Socket connection = null;
     	try
     	{
 	    	ChargenTcpClient chargenTcpClient = null;
@@ -190,14 +189,6 @@ public class ChargenClientDriver
 	    			chargenTcpClient = new ChargenTcpClient(
 	    				InetAddress.getByName(host), 
 	    				Integer.parseInt(port));
-	    			
-	    			connection = new Socket(
-	    				chargenTcpClient.getHost(), 
-	    				chargenTcpClient.getPort());
-	    			
-	    			// TODO remove
-	    			System.out.println("made TCP client");
-	    			
 	    			break;
 //	    		case "UDP":
 //	    			chargenClient = new ChargenUdpClient(
@@ -205,20 +196,11 @@ public class ChargenClientDriver
 //	    					Integer.parseInt(port));
 	    	}
 	    	
+	    	chargenTcpClient.sendToHost(flag);
 	    	
-	    	chargenTcpClient.printToStream(
-	    		new PrintStream(connection.getOutputStream()));
+	    	chargenTcpClient.printToStream(System.out);
 	    	
-	        String response = null;
-
-        	BufferedReader fromHost = new BufferedReader(
-        		new InputStreamReader(connection.getInputStream()));
-	        while ((response = fromHost.readLine()) != null)
-	        {
-	        	System.out.println(response);
-	        }
-	        
-	        connection.close();
+	        chargenTcpClient.closeStreamsAndSocket();
     	}
         // The IP address of the server could not be determined.
         catch (UnknownHostException e) 

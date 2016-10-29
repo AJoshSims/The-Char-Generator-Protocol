@@ -1,8 +1,12 @@
 package client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.Socket;
 
 /**
  * 
@@ -12,16 +16,48 @@ import java.net.InetAddress;
  *
  * @version 24 October 2016
  */
-public class ChargenTcpClient extends AbstractChargenClient
+class ChargenTcpClient extends AbstractChargenClient
 {	
+	// Client to server communication resources
+	/**
+	 * The endpoint between the client and the server
+	 */
+	private Socket socket;
+	
+	/**
+	 * The stream through which the client sends data to the server.
+	 */
+	private PrintWriter toHost;
+	
+	/**
+	 * The stream through which the server sends data to the client.
+	 */
+	private BufferedReader fromHost;
+	
 	// Constructors
-	protected ChargenTcpClient(InetAddress host, int port)
+	public ChargenTcpClient(InetAddress host, int port)
 		throws IOException, SecurityException
 	{
 		super(host, port);
+		
+		socket = new Socket(getHost(), getPort());
+        toHost = new PrintWriter(socket.getOutputStream());
+        fromHost = new BufferedReader(new InputStreamReader(
+        	socket.getInputStream()));
 	}
 	
 	// Methods
+    /**
+     * 
+     * 
+     * @param flag -
+     */
+    public void sendToHost(String flag)
+    {
+    	toHost.print(flag + "\r\n");
+    	toHost.flush();
+    }
+	
 	/**
 	 * 
 	 * 
@@ -30,7 +66,44 @@ public class ChargenTcpClient extends AbstractChargenClient
 	@Override
 	public void printToStream(PrintStream out)
 	{
-		out.print("NAN");
-		out.flush();
+        String response = "";
+        do 
+        {
+        	out.print(response);
+        	out.flush();
+        	
+        	try 
+        	{
+        		response = fromHost.readLine();
+        	}
+        	
+        	catch (IOException e)
+        	{
+        		response = "";
+        	}
+        }   
+        while (response != null);    
 	}
+    
+    /**
+     * 
+     */
+    public void closeStreamsAndSocket()
+    {
+    	boolean retry = false;
+    	do
+    	{
+        	try 
+        	{
+        		toHost.close();
+    			fromHost.close();
+    			socket.close();
+    		}
+        	catch (IOException e) 
+        	{
+        		retry = true;
+    		}
+    	}
+    	while (retry == true);
+    }
 }
