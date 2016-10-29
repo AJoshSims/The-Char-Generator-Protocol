@@ -70,7 +70,7 @@ class ChargenTcpClient extends AbstractChargenClient
         String response = "";
         do 
         {
-        	out.print(response);
+        	out.println(response);
         	out.flush();
         	
         	try 
