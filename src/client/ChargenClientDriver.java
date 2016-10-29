@@ -1,7 +1,11 @@
 package client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 import common.InvalidNumOfArgsException;
@@ -11,7 +15,7 @@ import common.InvalidTransProtocolException;
 /**
  * 
  * 
- * <p>Usage: java chargen/ChargenClientDriver 
+ * <p>Usage: java client/ChargenClientDriver 
  * &lt;TCP/UDP&gt; &lt;host&gt; [&lt;port&gt;] [&lt;flag&gt;]
  * 
  * @author Evan Arroyo
@@ -164,15 +168,18 @@ public class ChargenClientDriver
     	}
     	finally
     	{
-    		printUsageAndAbortMessage();
-    		System.exit(exitCode);
+    		if (exitCode != NO_ERROR)
+    		{
+	    		printUsageMessageAndAbortProgram(exitCode);
+    		}
     	}
     	
     	final String transProtocol = examinedArgs[INDEX_OF_TRANS_PROTOCOL];
     	final String host = examinedArgs[INDEX_OF_HOST];
     	final String port = examinedArgs[INDEX_OF_PORT];
     	final String flag = examinedArgs[INDEX_OF_FLAG];
-
+    	
+    	Socket connection = null;
     	try
     	{
 	    	ChargenTcpClient chargenTcpClient = null;
@@ -183,6 +190,10 @@ public class ChargenClientDriver
 	    			chargenTcpClient = new ChargenTcpClient(
 	    				InetAddress.getByName(host), 
 	    				Integer.parseInt(port));
+	    			
+	    			connection = new Socket(
+	    				chargenTcpClient.getHost(), 
+	    				chargenTcpClient.getPort());
 	    			
 	    			// TODO remove
 	    			System.out.println("made TCP client");
@@ -195,6 +206,19 @@ public class ChargenClientDriver
 	    	}
 	    	
 	    	
+	    	chargenTcpClient.printToStream(
+	    		new PrintStream(connection.getOutputStream()));
+	    	
+	        String response = null;
+
+        	BufferedReader fromHost = new BufferedReader(
+        		new InputStreamReader(connection.getInputStream()));
+	        while ((response = fromHost.readLine()) != null)
+	        {
+	        	System.out.println(response);
+	        }
+	        
+	        connection.close();
     	}
         // The IP address of the server could not be determined.
         catch (UnknownHostException e) 
@@ -217,8 +241,10 @@ public class ChargenClientDriver
         }
     	finally
     	{
-    		printUsageAndAbortMessage();
-    		System.exit(exitCode);
+    		if (exitCode != NO_ERROR)
+    		{
+	    		printUsageMessageAndAbortProgram(exitCode);
+    		}
     	}
     }
     
@@ -240,24 +266,28 @@ public class ChargenClientDriver
     	// (Value of null are assigned as the default transport protocol and
     	// default host, however, the program will never use it because a 
     	// transport protocol and the host must be specified by the user.)
-    	String[] examinedArgs = 
-    		{null, null, "" + CHARGEN_PORT_NUM, ""};
+    	String[] examinedArgs = {null, null, "" + CHARGEN_PORT_NUM, ""};
     		
+    	String transProtocol = null;
+    	String host = null;
+    	String port = null;
+    	String flag = null;
+    	
     	// Assigns values to the program arguments based on what the user 
     	// specified via the command line.
-    	String transProtocol = args[INDEX_OF_TRANS_PROTOCOL];
-    	String host = args[INDEX_OF_HOST];
-    	String port = args[INDEX_OF_PORT];
-    	String flag = args[INDEX_OF_FLAG];
     	switch (args.length)
     	{
     		// The user has specified a transport protocol, the host, a port, 
     		// and a flag.
     		case TRANS_PROTOCOL_AND_HOST_AND_PORT_AND_FLAG:
+    			flag = args[INDEX_OF_FLAG];
+    			
     			examinedArgs[INDEX_OF_FLAG] = flag;
     			
     		// The user has specified a host and either a flag or a port.
     		case TRANS_PROTOCOL_AND_HOST_AND_PORT_OR_FLAG:
+    			port = args[INDEX_OF_PORT];
+    			
     			// If the user specified a port, uses it.
     			if (isValidPortNum(port.toCharArray()))
     			{
@@ -278,8 +308,11 @@ public class ChargenClientDriver
     			
     		// The user has specified only the transport protocol and the host.
     		case TRANS_PROTOCOL_AND_HOST:
-    			if (!transProtocol.equals("TCP") 
-    				|| !transProtocol.equals("UDP"))
+    			transProtocol = args[INDEX_OF_TRANS_PROTOCOL].toUpperCase();
+    			host = args[INDEX_OF_HOST];
+    			
+    			if (!(transProtocol.equals("TCP") 
+    				|| transProtocol.equals("UDP")))
     			{
     				throw new InvalidTransProtocolException();
     			}
@@ -339,11 +372,12 @@ public class ChargenClientDriver
     	return true;
     }
     
-    static void printUsageAndAbortMessage()
+    static void printUsageMessageAndAbortProgram(int exitCode)
     {
     	System.err.println(
-			"\nUsage: java chargen/ChargenClientDriver " +
+			"\nUsage: java client/ChargenClientDriver " +
 			"<TCP/UDP> <host> [<port>] [<flag>]" +
 			"\nAborting program...");
+    	System.exit(exitCode);
     }
 }

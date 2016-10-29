@@ -1,4 +1,5 @@
-package chargen;
+package client;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.DatagramPacket;
