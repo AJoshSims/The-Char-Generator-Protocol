@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 
 import common.InvalidNumOfArgsException;
 import common.InvalidPortException;
+import common.InvalidTransProtocolException;
 
 /**
  * 
@@ -21,37 +22,53 @@ import common.InvalidPortException;
 
 public class ChargenClientDriver 
 {
-	// Error codes
+	// Exit codes
 	/**
-	 * Error code indicating an invalid number of command line arguments were
-	 * passed.
+	 * Exit code indicating that the program terminated without error.
 	 */
-	private static final int INVALID_NUM_OF_ARGS = 1;
+	private static final int NO_ERROR = 0;
 	
 	/**
-	 * Error code indicating an invalid port number was passed at the command
+	 * Exit code indicating that an invalid number of command line arguments 
+	 * were passed.
+	 */
+	private static final int INVALID_NUM_OF_ARGS_EXCEPTION = 1;
+	
+	/**
+	 * Exit code indicating that an invalid port was passed at the command 
 	 * line.
 	 */
-	private static final int INVALID_PORT_NUMBER = 2;
+	private static final int INVALID_PORT_EXCEPTION = 2;
 	
 	/**
-	 * Error code indicating an IO exception occurred during the 
+	 * Exit code indicating that neither TCP nor UDP was specified as the
+	 * transport layer protocol.
+	 */
+	private static final int INVALID_TRANS_PROTOCOL_EXCEPTION = 3;
+	
+	/**
+	 * Exit code indicating that an IO exception occurred during the 
 	 * creation/management of the client to server resources.
 	 */
-	private static final int IO_EXCEPTION = 3;
+	private static final int IO_EXCEPTION = 4;
 	
 	/**
-	 * Error code indicating that the IP address of the server could not be
+	 * Exit code indicating that the IP address of the server could not be
 	 * determined.
 	 */
-	private static final int UNKNOWN_HOST_EXCEPTION = 4;
+	private static final int UNKNOWN_HOST_EXCEPTION = 5;
 	
 	/**
-	 * Error code indicating that the security manager has thrown an exception
+	 * Exit code indicating that the security manager has thrown an exception
 	 * to indicate that a security violation has arisen from the attempt to 
 	 * create the socket.
 	 */
-	private static final int SECURITY_EXCEPTION = 5;
+	private static final int SECURITY_EXCEPTION = 6;
+	
+	/**
+	 * Exit code associated with the program's termination.
+	 */
+	private static int exitCode = NO_ERROR;
 	
 	// Port number information
 	/**
@@ -130,18 +147,25 @@ public class ChargenClientDriver
     	{
     		examinedArgs = examineArgs(args);
     	}
-    	
     	catch (InvalidNumOfArgsException e)
     	{
-    		System.out.println(e.getMessage());
-    		printUsageAndAbortMessage();
-    		System.exit(INVALID_NUM_OF_ARGS);
+    		exitCode = INVALID_NUM_OF_ARGS_EXCEPTION;
+    		System.err.println(e.getMessage());
     	}
     	catch (InvalidPortException e)
     	{
-    		System.out.println(e.getMessage());
+    		exitCode = INVALID_PORT_EXCEPTION;
+    		System.err.println(e.getMessage());
+    	}
+    	catch (InvalidTransProtocolException e)
+    	{
+    		exitCode = INVALID_TRANS_PROTOCOL_EXCEPTION;
+    		System.err.println(e.getMessage());
+    	}
+    	finally
+    	{
     		printUsageAndAbortMessage();
-    		System.exit(INVALID_PORT_NUMBER);
+    		System.exit(exitCode);
     	}
     	
     	final String transProtocol = examinedArgs[INDEX_OF_TRANS_PROTOCOL];
@@ -151,41 +175,51 @@ public class ChargenClientDriver
 
     	try
     	{
-	    	ChargenClient chargenClient = null;
+	    	ChargenTcpClient chargenTcpClient = null;
+	    	ChargenUdpClient chargenUdpClient = null;
 	    	switch (transProtocol)
 	    	{
 	    		case "TCP":
-	    			chargenClient = new ChargenTcpClient(
+	    			chargenTcpClient = new ChargenTcpClient(
 	    				InetAddress.getByName(host), 
 	    				Integer.parseInt(port));
+	    			
+	    			// TODO remove
+	    			System.out.println("made TCP client");
+	    			
 	    			break;
-	    		case "UDP":
-	    			chargenClient = new ChargenUdpClient(
-	    					InetAddress.getByName(host), 		
-	    					Integer.parseInt(port));
+//	    		case "UDP":
+//	    			chargenClient = new ChargenUdpClient(
+//	    					InetAddress.getByName(host), 		
+//	    					Integer.parseInt(port));
 	    	}
+	    	
+	    	
     	}
-    	
         // The IP address of the server could not be determined.
         catch (UnknownHostException e) 
         {
-            System.err.println("The IP address of the specified host " +
-        		"could not be determined.");
-            System.exit(UNKNOWN_HOST_EXCEPTION);
+        	exitCode = UNKNOWN_HOST_EXCEPTION;
+            System.err.println(e.getMessage());
         } 
         // An IO exception occurred during the creation of the 
         // client to server communication resources.
         catch (IOException e) 
         {
+        	exitCode = IO_EXCEPTION;
             System.err.println(e.getMessage());
-            System.exit(IO_EXCEPTION);
         } 
         // The security manager indicates that there is a security violation.
         catch (SecurityException e)
         {
+        	exitCode = SECURITY_EXCEPTION;
         	System.err.println(e.getMessage());
-        	System.exit(SECURITY_EXCEPTION);
         }
+    	finally
+    	{
+    		printUsageAndAbortMessage();
+    		System.exit(exitCode);
+    	}
     }
     
     /**
@@ -197,7 +231,10 @@ public class ChargenClientDriver
 	 * @param args - &lt;TCP/UDP&gt; &lt;host&gt; [&lt;port&gt;] [&lt;flag&gt;]
      */
     private static String[] examineArgs(String[] args) 
-    	throws InvalidNumOfArgsException, InvalidPortException
+    	throws 
+    	InvalidNumOfArgsException, 
+    	InvalidTransProtocolException, 
+    	InvalidPortException
     {	
     	// The default arguments.
     	// (Value of null are assigned as the default transport protocol and
@@ -208,25 +245,29 @@ public class ChargenClientDriver
     		
     	// Assigns values to the program arguments based on what the user 
     	// specified via the command line.
+    	String transProtocol = args[INDEX_OF_TRANS_PROTOCOL];
+    	String host = args[INDEX_OF_HOST];
+    	String port = args[INDEX_OF_PORT];
+    	String flag = args[INDEX_OF_FLAG];
     	switch (args.length)
     	{
     		// The user has specified a transport protocol, the host, a port, 
     		// and a flag.
     		case TRANS_PROTOCOL_AND_HOST_AND_PORT_AND_FLAG:
-    			examinedArgs[INDEX_OF_FLAG] = args[INDEX_OF_FLAG];
+    			examinedArgs[INDEX_OF_FLAG] = flag;
     			
     		// The user has specified a host and either a flag or a port.
     		case TRANS_PROTOCOL_AND_HOST_AND_PORT_OR_FLAG:
     			// If the user specified a port, uses it.
-    			if (isValidPortNum(args[INDEX_OF_PORT].toCharArray()))
+    			if (isValidPortNum(port.toCharArray()))
     			{
-        			examinedArgs[INDEX_OF_PORT] = args[INDEX_OF_PORT];
+        			examinedArgs[INDEX_OF_PORT] = port;
     			}
     			// The user has specified a flag only once and has not
     			// specified a port
     			else if (examinedArgs[INDEX_OF_FLAG] == "")
     			{
-    				examinedArgs[INDEX_OF_FLAG] = args[INDEX_OF_PORT];
+    				examinedArgs[INDEX_OF_FLAG] = port;
     			}
     			// The user has not specified a valid port and has already
     			// specified a flag, so aborts the program.
@@ -237,10 +278,14 @@ public class ChargenClientDriver
     			
     		// The user has specified only the transport protocol and the host.
     		case TRANS_PROTOCOL_AND_HOST:
-    			examinedArgs[INDEX_OF_TRANS_PROTOCOL] = 
-    				args[INDEX_OF_TRANS_PROTOCOL];
-    			examinedArgs[INDEX_OF_HOST] = 
-					args[INDEX_OF_HOST];
+    			if (!transProtocol.equals("TCP") 
+    				|| !transProtocol.equals("UDP"))
+    			{
+    				throw new InvalidTransProtocolException();
+    			}
+    			
+    			examinedArgs[INDEX_OF_TRANS_PROTOCOL] = transProtocol;
+    			examinedArgs[INDEX_OF_HOST] = host;
     			break;
     		
     		default:
@@ -296,7 +341,7 @@ public class ChargenClientDriver
     
     static void printUsageAndAbortMessage()
     {
-    	System.out.println(
+    	System.err.println(
 			"\nUsage: java chargen/ChargenClientDriver " +
 			"<TCP/UDP> <host> [<port>] [<flag>]" +
 			"\nAborting program...");
