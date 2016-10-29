@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 
 /**
  * @author Evan Arroyo
@@ -17,32 +18,71 @@ import java.net.InetAddress;
 //TODO Errors on line 17 with AbstractChargenClient and line 26 with getHost() and getPort()
 public class ChargenUdpClient extends AbstractChargenClient 
 {
+	private DatagramSocket socket;
+	
 	public ChargenUdpClient(InetAddress host, int port)
+		throws SocketException, SecurityException
 	{
 		super(host, port);
+		
+		socket = new DatagramSocket();
 	}
 	
+	@Override
+	public void sendToHost(String flag)
+	{
+		byte[] dataToSend = (flag + "\r\n").getBytes();
+		
+		DatagramPacket packetToSend = new DatagramPacket(
+			dataToSend, 
+			dataToSend.length,
+			getHost(), getPort());
+		
+		boolean retry = false;
+		do
+		{
+			try
+			{
+				socket.send(packetToSend);			
+			}
+			catch (IOException e)
+			{
+				retry = true;
+			}
+		}
+		while (retry == true);
+	}
+	
+	@Override
     public void printToStream(PrintStream out) 
     {
-    	
-    	
-        DatagramSocket sock = null;
-        DatagramPacket packet;
+        byte[] responseData = new byte[513];
+        DatagramPacket receivePacket = new DatagramPacket(
+			responseData, responseData.length);
 
-        try {
-            sock = new DatagramSocket();
-            byte[] buff = new byte[256];
-            packet = new DatagramPacket(buff, buff.length, getHost(), getPort());
-
-            sock.send(packet);
-
-            packet = new DatagramPacket(buff, buff.length);
-            sock.receive(packet);
-            String in = new String(packet.getData(), 0, packet.getLength());
-            System.out.println(in);
-
-        } catch (IOException e) {
-            System.out.println("IOException was caught");
+        boolean retry = false;
+        do
+        {
+        	try
+        	{
+        		socket.receive(receivePacket);        		
+        	}
+        	catch (IOException e)
+        	{
+        		retry = true;
+        	}
         }
+        while (retry == true);
+
+        String responseString = new String(receivePacket.getData());
+        
+        out.print(responseString);
+        out.flush();
     }
+	
+	@Override
+	public void closeResources()
+	{
+		socket.close();
+	}
 }
