@@ -76,7 +76,7 @@ public class ChargenUdpClient extends AbstractChargenClient
 
         String responseString = new String(receivePacket.getData());
         
-        out.print(responseString);
+        out.println(responseString);
         out.flush();
     }
 	
