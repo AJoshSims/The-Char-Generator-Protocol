@@ -1,16 +1,13 @@
 package client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 
 import common.InvalidNumOfArgsException;
 import common.InvalidPortException;
 import common.InvalidTransProtocolException;
+import common.Utilities;
 
 /**
  * 
@@ -74,22 +71,6 @@ public class ChargenClientDriver
 	 */
 	private static int exitCode = NO_ERROR;
 	
-	// Port number information
-	/**
-	 * The lowest number that a port can assume.
-	 */
-	private static final int PORT_NUM_LOWER_BOUND = 0;
-	
-	/**
-	 * The highest number that a port can assume.
-	 */
-	private static final int PORT_NUM_UPPER_BOUND = 65535;
-	
-	/**
-	 * The number assumed by the Chargen port.
-	 */
-	static final int CHARGEN_PORT_NUM = 19;
-	
 	// Command line argument indices
 	/**
 	 * The index of the transport protocol command line argument.
@@ -129,12 +110,6 @@ public class ChargenClientDriver
 	 * (the server), a port, and a flag were specified.
 	 */
 	private static final int TRANS_PROTOCOL_AND_HOST_AND_PORT_AND_FLAG = 4;
-	
-	// Miscellaneous constants
-    /**
-     * The length of an empty array.
-     */
-	private static final int EMPTY = 0;
 	
 	// Methods
 	// TODO Make sure that all errors are thrown up to main and handled there.
@@ -246,7 +221,8 @@ public class ChargenClientDriver
     	// (Value of null are assigned as the default transport protocol and
     	// default host, however, the program will never use it because a 
     	// transport protocol and the host must be specified by the user.)
-    	String[] examinedArgs = {null, null, "" + CHARGEN_PORT_NUM, ""};
+    	String[] examinedArgs = 
+    		{null, null, "" + Utilities.CHARGEN_PORT_NUM, ""};
     		
     	String transProtocol = null;
     	String host = null;
@@ -269,7 +245,7 @@ public class ChargenClientDriver
     			port = args[INDEX_OF_PORT];
     			
     			// If the user specified a port, uses it.
-    			if (isValidPortNum(port.toCharArray()))
+    			if (Utilities.isValidPortNum(port.toCharArray()))
     			{
         			examinedArgs[INDEX_OF_PORT] = port;
     			}
@@ -306,50 +282,6 @@ public class ChargenClientDriver
     	}
     	
     	return examinedArgs;
-    }
-    
-    /**
-     * Determines whether or not the third command line argument is a valid 
-     * port number.
-     * 
-     * @param maybePortNum - the third command line argument specified by
-     *     the user
-     * 
-     * @return true if the third command line argument is a port
-     *     number or false if otherwise
-     */
-    private static boolean isValidPortNum(char[] maybePortNum)
-    {
-    	// If the third command line argument is an empty string, it cannot
-    	// be a port number.
-    	if (maybePortNum.length == EMPTY)
-    	{
-    		return false;
-    	}
-    	
-    	for (char character : maybePortNum)
-    	{
-    		// If part of the third command line argument is not a digit, 
-    		// then the third command line argument cannot be a port number.
-    		if (!Character.isDigit(character))
-    		{
-    			return false;
-    		}
-    	}
-    	
-        String portNumString = new String(maybePortNum);
-        
-        // Determines if specified the port number is valid (between 0 and
-        // 65535).
-    	int portNum = Integer.parseInt(portNumString);
-    	if (portNum < PORT_NUM_LOWER_BOUND 
-    		|| portNum > PORT_NUM_UPPER_BOUND)
-    	{
-    		return false;
-    	}
-    	
-    	// The third command line argument must be a port number.
-    	return true;
     }
     
     static void printUsageMessageAndAbortProgram(int exitCode)

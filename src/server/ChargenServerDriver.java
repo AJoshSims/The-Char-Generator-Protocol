@@ -13,7 +13,7 @@ public class ChargenServerDriver
 	/**
 	 * 
 	 * 
-	 * @param args
+	 * @param args - &lt;TCP/UDP&rt; [&lt;port&gt;]
 	 */
 	public static void main(String args[])
 	{
