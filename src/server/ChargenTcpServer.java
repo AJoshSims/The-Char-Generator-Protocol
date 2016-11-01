@@ -1,5 +1,11 @@
 package server;
 
+import java.io.DataOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import common.Utilities;
+
 /**
  * 
  * 
@@ -13,30 +19,7 @@ public class ChargenTcpServer extends AbstractChargenServer
 	/**
 	 * 
 	 */
-	ChargenTcpServer()
-	{
-		
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param port
-	 */
-	ChargenTcpServer(int port)
-	{
-		
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param source
-	 */
-	ChargenTcpServer(ChargenSource source)
-	{
-		
-	}
+	ServerSocket welcomeSocket;
 	
 	/**
 	 * 
@@ -44,9 +27,9 @@ public class ChargenTcpServer extends AbstractChargenServer
 	 * @param port
 	 * @param source
 	 */
-	ChargenTcpServer(int port, ChargenSource source)
+	ChargenTcpServer(int port, ChargenSource<?> source)
 	{
-		
+		super(port, source);
 	}
 	
 	/**
@@ -55,6 +38,16 @@ public class ChargenTcpServer extends AbstractChargenServer
 	@Override
 	public void listen()
 	{
-		
+		Socket connectionSocket = null;
+		// TODO Do not use infinite loop
+		while (true)
+		{
+			connectionSocket = welcomeSocket.accept();
+			
+			DataOutputStream toClient = 
+				new DataOutputStream(connectionSocket.getOutputStream());
+			
+			while ()
+		}
 	}
 }
