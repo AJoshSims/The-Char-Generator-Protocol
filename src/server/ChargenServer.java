@@ -1,5 +1,7 @@
 package server;
 
+import java.io.IOException;
+
 /**
  * 
  * 
@@ -12,6 +14,8 @@ public interface ChargenServer
 {
 	/**
 	 * 
+	 * 
+	 * @throws IOException
 	 */
-	public void listen();
+	public void listen() throws IOException;
 }

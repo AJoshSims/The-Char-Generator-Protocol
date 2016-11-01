@@ -1,5 +1,7 @@
 package server;
 
+import java.io.IOException;
+
 import common.Utilities;
 
 /**
@@ -21,32 +23,6 @@ public abstract class AbstractChargenServer implements ChargenServer
 	 * 
 	 */
 	private ChargenSource<?> source;
-	
-	/**
-	 * 
-	 */
-	protected AbstractChargenServer()
-	{
-		this(Utilities.CHARGEN_PORT_NUM, new DefactoSource());
-	}
-	
-	/**
-	 * 
-	 * @param port
-	 */
-	protected AbstractChargenServer(int port)
-	{
-		this(port, new DefactoSource());
-	}
-	
-	/**
-	 * 
-	 * @param source
-	 */
-	protected AbstractChargenServer(ChargenSource<?> source)
-	{
-		this(Utilities.CHARGEN_PORT_NUM, source);
-	}
 	
 	/**
 	 * 
@@ -91,7 +67,9 @@ public abstract class AbstractChargenServer implements ChargenServer
 	
 	/**
 	 * 
+	 * 
+	 * @throws
 	 */
-	public abstract void listen();
+	public abstract void listen() throws IOException;
 
 }

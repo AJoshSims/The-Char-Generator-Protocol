@@ -1,5 +1,7 @@
 package server;
 
+import java.io.IOException;
+
 import common.InvalidNumOfArgsException;
 import common.InvalidPortException;
 import common.InvalidTransProtocolException;
@@ -72,15 +74,31 @@ public class ChargenServerDriver
 		
 		ChargenServer chargenServer = null;
 
-		switch (transProtocol)
+		try
 		{
-			case "TCP":
-				chargenServer = new ChargenTcpServer(Integer.parseInt(port));
-				break;
-//				case "UDP"
+			switch (transProtocol)
+			{
+				case "TCP":
+					chargenServer = new ChargenTcpServer(
+						Integer.parseInt(port), 
+						new DefactoSource());
+					break;
+	//				case "UDP"
+			}
+		}
+		catch (IOException e)
+		{
+			Utilities.exitCode = Utilities.IO_EXCEPTION;
+			System.out.println(e.getMessage());
 		}
 		
-		
+    	finally
+    	{
+    		if (Utilities.exitCode != Utilities.NO_ERROR)
+    		{
+	    		printUsageMessageAndAbortProgram();
+    		}
+    	}
 	}
 	
     /**
@@ -88,7 +106,7 @@ public class ChargenServerDriver
      * (the number assumed by the Chargen port) as the port number argument if 
      * no other value was provided.
      * 
-	 * @param args - &lt;TCP/UDP&gt; &lt;host&gt; [&lt;port&gt;] [&lt;flag&gt;]
+	 * @param args - &lt;TCP/UDP&gt; [&lt;port&gt;]
      */
     private static String[] examineArgs(String[] args) 
     	throws 
@@ -138,5 +156,13 @@ public class ChargenServerDriver
     	}
     	
     	return examinedArgs;
+    }
+    
+    static void printUsageMessageAndAbortProgram()
+    {
+    	System.err.println(
+			"\nUsage: java client/ChargenClientDriver <TCP/UDP> [<port>]" +
+			"\nAborting program...");
+    	System.exit(Utilities.exitCode);
     }
 }

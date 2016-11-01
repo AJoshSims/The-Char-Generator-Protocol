@@ -8,14 +8,14 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 /**
+ * 
+ * 
  * @author Evan Arroyo
  * @author Joshua Sims
  *
- * @version 10-24-16
- *
+ * @version 24 October 2016
  */
 
-//TODO Errors on line 17 with AbstractChargenClient and line 26 with getHost() and getPort()
 public class ChargenUdpClient extends AbstractChargenClient 
 {
 	private DatagramSocket socket;

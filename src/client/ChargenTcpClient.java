@@ -20,19 +20,19 @@ class ChargenTcpClient extends AbstractChargenClient
 {	
 	// Client to server communication resources
 	/**
-	 * The endpoint between the client and the server
+	 * The connection between the client and the server.
 	 */
-	private Socket socket;
+	private Socket connection;
 	
 	/**
 	 * The stream through which the client sends data to the server.
 	 */
-	private PrintWriter toHost;
+	private PrintWriter toServer;
 	
 	/**
-	 * The stream through which the server sends data to the client.
+	 * The stream through which the client reads data from the server.
 	 */
-	private BufferedReader fromHost;
+	private BufferedReader fromServer;
 	
 	// Constructors
 	public ChargenTcpClient(InetAddress host, int port)
@@ -40,10 +40,10 @@ class ChargenTcpClient extends AbstractChargenClient
 	{
 		super(host, port);
 		
-		socket = new Socket(getHost(), getPort());
-        toHost = new PrintWriter(socket.getOutputStream());
-        fromHost = new BufferedReader(new InputStreamReader(
-        	socket.getInputStream()));
+		connection = new Socket(getHost(), getPort());
+        toServer = new PrintWriter(connection.getOutputStream());
+        fromServer = new BufferedReader(new InputStreamReader(
+        	connection.getInputStream()));
 	}
 	
 	// Methods
@@ -55,8 +55,8 @@ class ChargenTcpClient extends AbstractChargenClient
 	@Override
     public void sendToHost(String flag)
     {
-    	toHost.print(flag + "\r\n");
-    	toHost.flush();
+    	toServer.print(flag + "\r\n");
+    	toServer.flush();
     }
 	
 	/**
@@ -75,7 +75,7 @@ class ChargenTcpClient extends AbstractChargenClient
         	
         	try 
         	{
-        		response = fromHost.readLine();
+        		response = fromServer.readLine();
         	}
         	
         	catch (IOException e)
@@ -97,9 +97,9 @@ class ChargenTcpClient extends AbstractChargenClient
     	{
         	try 
         	{
-        		toHost.close();
-    			fromHost.close();
-    			socket.close();
+        		toServer.close();
+    			fromServer.close();
+    			connection.close();
     		}
         	catch (IOException e) 
         	{
