@@ -9,35 +9,7 @@ package server;
  * @version 28 October 2016
  */
 public class ChargenUdpServer extends AbstractChargenServer
-{
-	/**
-	 * 
-	 */
-	ChargenUdpServer()
-	{
-		super();
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param port
-	 */
-	ChargenUdpServer(int port)
-	{
-		super(port);
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param source
-	 */
-	ChargenUdpServer(ChargenSource<?> source)
-	{
-		super(source);
-	}
-	
+{	
 	/**
 	 * 
 	 * 
