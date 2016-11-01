@@ -10,25 +10,27 @@ package server;
  */
 class NonAlphaNumericSource
 {
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	@Override
-	public Character next()
-	{
-		
-	}
+	// TODO need implements
 	
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	@Override
-	public int itemsToSend()
-	{
-		
-	}
+//	/**
+//	 * 
+//	 * 
+//	 * @return
+//	 */
+//	@Override
+//	public Character next()
+//	{
+//		
+//	}
+//	
+//	/**
+//	 * 
+//	 * 
+//	 * @return
+//	 */
+//	@Override
+//	public int itemsToSend()
+//	{
+//		
+//	}
 }

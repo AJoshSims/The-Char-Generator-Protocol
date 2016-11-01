@@ -10,25 +10,25 @@ package server;
  */
 class CardSource
 {
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	@Override
-	public Character next()
-	{
-		
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
-	@Override
-	public int itemsToSend()
-	{
-		
-	}
+//	/**
+//	 * 
+//	 * 
+//	 * @return
+//	 */
+//	@Override
+//	public Character next()
+//	{
+//		
+//	}
+//	
+//	/**
+//	 * 
+//	 * 
+//	 * @return
+//	 */
+//	@Override
+//	public int itemsToSend()
+//	{
+//		
+//	}
 }
