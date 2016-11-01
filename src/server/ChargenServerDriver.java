@@ -85,6 +85,8 @@ public class ChargenServerDriver
 					break;
 	//				case "UDP"
 			}
+			
+			chargenServer.listen();
 		}
 		catch (IOException e)
 		{
