@@ -8,14 +8,14 @@ package server;
  * 
  * @version 28 October 2016
  */
-interface ChargenSource
+interface ChargenSource<T>
 {
 	/**
 	 * 
 	 * 
 	 * @return
 	 */
-	public Character next();
+	public T next();
 	
 	/**
 	 * 

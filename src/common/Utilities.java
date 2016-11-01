@@ -6,17 +6,65 @@ public class Utilities
 	/**
 	 * The lowest number that a port can assume.
 	 */
-	private static final int PORT_NUM_LOWER_BOUND = 0;
+	public static final int PORT_NUM_LOWER_BOUND = 0;
 	
 	/**
 	 * The highest number that a port can assume.
 	 */
-	private static final int PORT_NUM_UPPER_BOUND = 65535;
+	public static final int PORT_NUM_UPPER_BOUND = 65535;
 	
 	/**
 	 * The number assumed by the Chargen port.
 	 */
 	public static final int CHARGEN_PORT_NUM = 19;
+		
+	// Exit codes
+	/**
+	 * Exit code indicating that the program terminated without error.
+	 */
+	public static final int NO_ERROR = 0;
+
+	/**
+	 * Exit code indicating that an invalid number of command line arguments 
+	 * were passed.
+	 */
+	public static final int INVALID_NUM_OF_ARGS_EXCEPTION = 1;
+	
+	/**
+	 * Exit code indicating that an invalid port was passed at the command 
+	 * line.
+	 */
+	public static final int INVALID_PORT_EXCEPTION = 2;
+	
+	/**
+	 * Exit code indicating that neither TCP nor UDP was specified as the
+	 * transport layer protocol.
+	 */
+	public static final int INVALID_TRANS_PROTOCOL_EXCEPTION = 3;
+	
+	/**
+	 * Exit code indicating that an IO exception occurred during the 
+	 * creation/management of the client to server resources.
+	 */
+	public static final int IO_EXCEPTION = 4;
+	
+	/**
+	 * Exit code indicating that the IP address of the server could not be
+	 * determined.
+	 */
+	public static final int UNKNOWN_HOST_EXCEPTION = 5;
+	
+	/**
+	 * Exit code indicating that the security manager has thrown an exception
+	 * to indicate that a security violation has arisen from the attempt to 
+	 * create the socket.
+	 */
+	public static final int SECURITY_EXCEPTION = 6;
+	
+	/**
+	 * Exit code associated with the termination of a process of this program.
+	 */
+	public static int exitCode = NO_ERROR;
 	
 	// Miscellaneous constants
     /**

@@ -15,7 +15,7 @@ public class ChargenUdpServer extends AbstractChargenServer
 	 */
 	ChargenUdpServer()
 	{
-		
+		super();
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public class ChargenUdpServer extends AbstractChargenServer
 	 */
 	ChargenUdpServer(int port)
 	{
-		
+		super(port);
 	}
 	
 	/**
@@ -33,9 +33,9 @@ public class ChargenUdpServer extends AbstractChargenServer
 	 * 
 	 * @param source
 	 */
-	ChargenUdpServer(ChargenSource source)
+	ChargenUdpServer(ChargenSource<?> source)
 	{
-		
+		super(source);
 	}
 	
 	/**
@@ -44,9 +44,9 @@ public class ChargenUdpServer extends AbstractChargenServer
 	 * @param port
 	 * @param source
 	 */
-	ChargenUdpServer(int port, ChargenSource source)
+	ChargenUdpServer(int port, ChargenSource<?> source)
 	{
-		
+		super(port, source);
 	}
 	
 	/**

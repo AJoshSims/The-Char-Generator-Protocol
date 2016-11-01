@@ -1,5 +1,7 @@
 package server;
 
+import common.Utilities;
+
 /**
  * 
  * 
@@ -18,42 +20,44 @@ public abstract class AbstractChargenServer implements ChargenServer
 	/**
 	 * 
 	 */
-	private ChargenSource source;
+	private ChargenSource<?> source;
 	
 	/**
 	 * 
 	 */
-	AbstractChargenServer()
+	protected AbstractChargenServer()
 	{
-		
+		this(Utilities.CHARGEN_PORT_NUM, new DefactoSource());
 	}
 	
 	/**
 	 * 
 	 * @param port
 	 */
-	AbstractChargenServer(int port)
+	protected AbstractChargenServer(int port)
 	{
-		
+		this(port, new DefactoSource());
 	}
 	
 	/**
 	 * 
 	 * @param source
 	 */
-	AbstractChargenServer(ChargenSource source)
+	protected AbstractChargenServer(ChargenSource<?> source)
 	{
-		
+		this(Utilities.CHARGEN_PORT_NUM, source);
 	}
 	
 	/**
+	 * 
 	 * 
 	 * @param port
 	 * @param source
 	 */
-	AbstractChargenServer(int port, ChargenSource source)
+	protected AbstractChargenServer(int port, ChargenSource<?> source)
 	{
-		
+		this.port = port;
+		this.source = source;
 	}
 	
 	/**
@@ -67,9 +71,10 @@ public abstract class AbstractChargenServer implements ChargenServer
 	
 	/**
 	 * 
+	 *
 	 * @return
 	 */
-	protected ChargenSource getSource()
+	protected ChargenSource<?> getSource()
 	{
 		return source;
 	}
@@ -79,7 +84,7 @@ public abstract class AbstractChargenServer implements ChargenServer
 	 * 
 	 * @param source
 	 */
-	void changeSource(ChargenSource source)
+	void changeSource(ChargenSource<?> source)
 	{
 		this.source = source;
 	}
