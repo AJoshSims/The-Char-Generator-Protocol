@@ -69,7 +69,9 @@ public class ChargenTcpServer extends AbstractChargenServer
 		receivedData = fromClient.readLine();
 		
 		// TODO do more with this
-		System.out.println("Your message was " + receivedData);
+		toClient.println("Your message was " + receivedData);
+		toClient.flush();
+		
 		
 		connection = null;
 		}
