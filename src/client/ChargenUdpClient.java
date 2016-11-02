@@ -41,6 +41,7 @@ public class ChargenUdpClient extends AbstractChargenClient
 		boolean retry = false;
 		do
 		{
+			retry = false;
 			try
 			{
 				socket.send(packetToSend);			
@@ -56,16 +57,17 @@ public class ChargenUdpClient extends AbstractChargenClient
 	@Override
     public void printToStream(PrintStream out) 
     {
-        byte[] responseData = new byte[513];
-        DatagramPacket receivePacket = new DatagramPacket(
-			responseData, responseData.length);
+        byte[] receivedData = new byte[513];
+        DatagramPacket receivedPacket = new DatagramPacket(
+			receivedData, receivedData.length);
 
         boolean retry = false;
         do
         {
+        	retry = false;
         	try
         	{
-        		socket.receive(receivePacket);        		
+        		socket.receive(receivedPacket);        		
         	}
         	catch (IOException e)
         	{
@@ -74,9 +76,9 @@ public class ChargenUdpClient extends AbstractChargenClient
         }
         while (retry == true);
 
-        String responseString = new String(receivePacket.getData());
+        String receivedString = new String(receivedPacket.getData());
         
-        out.println(responseString);
+        out.println(receivedString);
         out.flush();
     }
 	

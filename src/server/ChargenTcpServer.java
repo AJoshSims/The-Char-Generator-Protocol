@@ -49,6 +49,7 @@ public class ChargenTcpServer extends AbstractChargenServer
 		welcome = new ServerSocket(port);
 	}
 	
+	// TODO protect against IOException
 	/**
 	 * 
 	 */
@@ -73,8 +74,8 @@ public class ChargenTcpServer extends AbstractChargenServer
 		toClient.flush();
 		
 		
-		connection = null;
+		connection.close();
 		}
-		while (connection == null);
+		while (true);
 	}
 }

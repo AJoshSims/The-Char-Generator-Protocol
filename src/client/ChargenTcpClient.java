@@ -95,6 +95,7 @@ class ChargenTcpClient extends AbstractChargenClient
     	boolean retry = false;
     	do
     	{
+    		retry = false;
         	try 
         	{
         		toServer.close();
