@@ -45,43 +45,46 @@ public class ChargenUdpServer extends AbstractChargenServer
 			new DatagramPacket(receivedData, receivedData.length);
 		
 		boolean retry = false;
-		do
+		
+		// TODO no infinite loops
+		while (true)
 		{
-			retry = false;
-			try
+			do
 			{
-				connection.receive(receivedPacket);
+				retry = false;
+				try
+				{
+					connection.receive(receivedPacket);
+				}
+				catch (IOException e)
+				{
+					retry = true;
+				}
 			}
-			catch (IOException e)
+			while (retry == true);
+			
+			String receivedString = "yo";
+			
+			byte[] sentData = receivedString.getBytes();
+	//		byte[] sentData = new byte[513];
+			
+			DatagramPacket sentPacket = new DatagramPacket(
+				sentData, sentData.length, 
+				receivedPacket.getAddress(), receivedPacket.getPort());
+			
+			do
 			{
-				retry = true;
+				retry = false;
+				try
+				{
+					connection.send(sentPacket);
+				}
+				catch (IOException e)
+				{
+					retry = true;
+				}
 			}
+			while (retry == true);
 		}
-		while (retry == true);
-		
-		String receivedString = new String(receivedPacket.getData());
-		
-		receivedString += " HOORAY UDP SERVER";
-		
-		byte[] sentData = receivedString.getBytes();
-//		byte[] sentData = new byte[513];
-		
-		DatagramPacket sentPacket = new DatagramPacket(
-			sentData, sentData.length, 
-			receivedPacket.getAddress(), receivedPacket.getPort());
-		
-		do
-		{
-			retry = false;
-			try
-			{
-				connection.send(sentPacket);
-			}
-			catch (IOException e)
-			{
-				retry = true;
-			}
-		}
-		while (retry == true);
 	}
 }
