@@ -7,6 +7,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import common.Utilities;
+
 /**
  * 
  * 
@@ -19,6 +21,12 @@ import java.net.SocketException;
 public class ChargenUdpClient extends AbstractChargenClient 
 {
 	private DatagramSocket connection;
+	
+	public ChargenUdpClient(InetAddress host)
+		throws SocketException, SecurityException
+	{	
+		this(host, Utilities.CHARGEN_PORT_NUM);
+	}
 	
 	public ChargenUdpClient(InetAddress host, int port)
 		throws SocketException, SecurityException

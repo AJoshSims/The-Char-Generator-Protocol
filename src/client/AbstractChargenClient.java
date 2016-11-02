@@ -19,6 +19,11 @@ abstract class AbstractChargenClient implements ChargenClient
     private InetAddress host;
 
     private int port;
+    
+    public AbstractChargenClient(InetAddress host)
+    {
+    	this(host, Utilities.CHARGEN_PORT_NUM);
+    }
 
     public AbstractChargenClient(InetAddress host, int port)
     {

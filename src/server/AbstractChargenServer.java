@@ -24,6 +24,21 @@ public abstract class AbstractChargenServer implements ChargenServer
 	 */
 	private ChargenSource<?> source;
 	
+	protected AbstractChargenServer()
+	{
+		this(Utilities.CHARGEN_PORT_NUM, new DefactoSource());
+	}
+	
+	protected AbstractChargenServer(int port)
+	{
+		this(port, new DefactoSource());
+	}
+	
+	protected AbstractChargenServer(ChargenSource<?> source)
+	{
+		this(Utilities.CHARGEN_PORT_NUM, source);
+	}
+	
 	/**
 	 * 
 	 * 
