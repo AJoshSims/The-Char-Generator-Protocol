@@ -8,29 +8,27 @@ package server;
  * 
  * @version 28 October 2016
  */
-class NonAlphaNumericSource
-{
-	// TODO need implements
+class NonAlphaNumericSource implements ChargenSource<Character>
+{	
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	@Override
+	public Character next()
+	{
+		
+	}
 	
-//	/**
-//	 * 
-//	 * 
-//	 * @return
-//	 */
-//	@Override
-//	public Character next()
-//	{
-//		
-//	}
-//	
-//	/**
-//	 * 
-//	 * 
-//	 * @return
-//	 */
-//	@Override
-//	public int itemsToSend()
-//	{
-//		
-//	}
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	@Override
+	public int itemsToSend()
+	{
+		
+	}
 }

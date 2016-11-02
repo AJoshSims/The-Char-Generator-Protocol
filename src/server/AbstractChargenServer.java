@@ -75,7 +75,7 @@ public abstract class AbstractChargenServer implements ChargenServer
 	 * 
 	 * @param source
 	 */
-	void changeSource(ChargenSource<?> source)
+	protected void changeSource(ChargenSource<?> source)
 	{
 		this.source = source;
 	}
