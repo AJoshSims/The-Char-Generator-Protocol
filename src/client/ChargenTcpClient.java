@@ -76,26 +76,39 @@ class ChargenTcpClient extends AbstractChargenClient
 	@Override
 	public void printToStream(PrintStream out)
 	{
-        String response = "";
-        do 
+        char[] dataReceived = new char[512];
+        
+        try
         {
-        	out.println(response);
-        	out.flush();
+	        while (fromServer.read(dataReceived) != -1)
+	        {
+	        	out.println(dataReceived);
+	        	out.flush();
+	        }
+        }
+        catch (IOException e)
+        {
         	
-        	try 
-        	{
-        		response = fromServer.readLine();
-        	}
-        	
-        	catch (IOException e)
-        	{
-        		System.err.println(
-        			e.getMessage() +
-					"\n\nTrying to receive data from server...");
-        		response = "";
-        	}
-        }   
-        while (response != null);    
+        }
+//        do 
+//        {
+//        	out.println(dataReceived);
+//        	out.flush();
+//        	
+//        	try 
+//        	{
+//        		fromServer.read(dataReceived);
+//        	}
+//        	
+//        	catch (IOException e)
+//        	{
+//        		System.err.println(
+//        			e.getMessage() +
+//					"\n\nTrying to receive data from server...");
+//        		dataReceived = "";
+//        	}
+//        }   
+//        while (fromServer.read() != -1);    
 	}
     
     /**
