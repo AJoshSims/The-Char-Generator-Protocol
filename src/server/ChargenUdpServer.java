@@ -86,7 +86,7 @@ public class ChargenUdpServer extends AbstractChargenServer
 			// TODO no declarations inside of loops >:(
 			String receivedString = "message was " + new String(receivedPacket.getData());
 			receivedString = receivedString.substring(0, receivedString.length() - 3);
-			System.out.println("print from server: " + receivedString);
+			System.out.println("print result from server: " + receivedString);
 			
 			byte[] sentData = receivedString.getBytes();
 	//		byte[] sentData = new byte[513];
