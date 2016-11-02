@@ -1,7 +1,8 @@
 package common;
 
 /**
- * Thrown to indicate that an invalid number of arguments have been passed.
+ * Thrown to indicate that an invalid number of command line arguments have 
+ * been passed.
  * 
  * @author Evan Arroyo
  * @author Joshua Sims
@@ -12,7 +13,7 @@ public class InvalidNumOfArgsException extends Exception
 {
 	public InvalidNumOfArgsException()
 	{
-		super("An invalid number of arguments have been passed.");
+		super("An invalid number of command line arguments has been passed.");
 	}
 
 	public InvalidNumOfArgsException(String message)

@@ -64,7 +64,7 @@ public class Utilities
 	/**
 	 * Exit code associated with the termination of a process of this program.
 	 */
-	public static int exitCode = NO_ERROR;
+	public int exitCode = NO_ERROR;
 	
 	// Miscellaneous constants
     /**

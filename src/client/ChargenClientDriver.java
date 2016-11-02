@@ -72,6 +72,8 @@ public class ChargenClientDriver
 	 */
     public static void main(String args[]) 
     {
+    	Utilities utilities = new Utilities();
+    	
     	String[] examinedArgs = null;
     	try
     	{
@@ -79,24 +81,24 @@ public class ChargenClientDriver
     	}
     	catch (InvalidNumOfArgsException e)
     	{
-    		Utilities.exitCode = Utilities.INVALID_NUM_OF_ARGS_EXCEPTION;
+    		utilities.exitCode = Utilities.INVALID_NUM_OF_ARGS_EXCEPTION;
     		System.err.println(e.getMessage());
     	}
     	catch (InvalidPortException e)
     	{
-    		Utilities.exitCode = Utilities.INVALID_PORT_EXCEPTION;
+    		utilities.exitCode = Utilities.INVALID_PORT_EXCEPTION;
     		System.err.println(e.getMessage());
     	}
     	catch (InvalidTransProtocolException e)
     	{
-    		Utilities.exitCode = Utilities.INVALID_TRANS_PROTOCOL_EXCEPTION;
+    		utilities.exitCode = Utilities.INVALID_TRANS_PROTOCOL_EXCEPTION;
     		System.err.println(e.getMessage());
     	}
     	finally
     	{
-    		if (Utilities.exitCode != Utilities.NO_ERROR)
+    		if (utilities.exitCode != Utilities.NO_ERROR)
     		{
-	    		printUsageMessageAndAbortProgram();
+	    		printUsageMessageAndAbortProgram(utilities.exitCode);
     		}
     	}
     	
@@ -130,27 +132,28 @@ public class ChargenClientDriver
         // The IP address of the server could not be determined.
         catch (UnknownHostException e) 
         {
-        	Utilities.exitCode = Utilities.UNKNOWN_HOST_EXCEPTION;
-            System.err.println(e.getMessage());
+        	utilities.exitCode = Utilities.UNKNOWN_HOST_EXCEPTION;
+            System.err.println(
+				"The IP address of \"" + host + "\" could not be determined.");
         } 
         // An IO exception occurred during the creation of the 
         // client to server communication resources.
         catch (IOException e) 
         {
-        	Utilities.exitCode = Utilities.IO_EXCEPTION;
+        	utilities.exitCode = Utilities.IO_EXCEPTION;
             System.err.println(e.getMessage());
         } 
         // The security manager indicates that there is a security violation.
         catch (SecurityException e)
         {
-        	Utilities.exitCode = Utilities.SECURITY_EXCEPTION;
+        	utilities.exitCode = Utilities.SECURITY_EXCEPTION;
         	System.err.println(e.getMessage());
         }
     	finally
     	{
-    		if (Utilities.exitCode != Utilities.NO_ERROR)
+    		if (utilities.exitCode != Utilities.NO_ERROR)
     		{
-	    		printUsageMessageAndAbortProgram();
+	    		printUsageMessageAndAbortProgram(utilities.exitCode);
     		}
     	}
     }
@@ -201,8 +204,7 @@ public class ChargenClientDriver
     			{
         			examinedArgs[INDEX_OF_PORT] = port;
     			}
-    			// The user has specified a flag only once and has not
-    			// specified a port
+    			// Must be the flag (not the port) so assign it as the flag.
     			else if (examinedArgs[INDEX_OF_FLAG] == "")
     			{
     				examinedArgs[INDEX_OF_FLAG] = port;
@@ -236,12 +238,12 @@ public class ChargenClientDriver
     	return examinedArgs;
     }
     
-    static void printUsageMessageAndAbortProgram()
+    static void printUsageMessageAndAbortProgram(int exitCode)
     {
     	System.err.println(
-			"\nUsage: java client/ChargenClientDriver " +
+			"Usage: java client/ChargenClientDriver " +
 			"<TCP/UDP> <host> [<port>] [<flag>]" +
 			"\nAborting program...");
-    	System.exit(Utilities.exitCode);
+    	System.exit(exitCode);
     }
 }

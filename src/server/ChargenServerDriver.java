@@ -48,6 +48,8 @@ public class ChargenServerDriver
 	 */
 	public static void main(String args[])
 	{
+		Utilities utilities = new Utilities();
+		
 		String[] examinedArgs = null;
 		try
 		{
@@ -55,25 +57,32 @@ public class ChargenServerDriver
 		}
 		catch (InvalidNumOfArgsException e)
 		{
-			Utilities.exitCode = Utilities.INVALID_NUM_OF_ARGS_EXCEPTION;
+			utilities.exitCode = Utilities.INVALID_NUM_OF_ARGS_EXCEPTION;
 			System.err.println(e.getMessage());
 		}
 		catch (InvalidTransProtocolException e)
 		{
-			Utilities.exitCode = Utilities.INVALID_TRANS_PROTOCOL_EXCEPTION;
+			utilities.exitCode = Utilities.INVALID_TRANS_PROTOCOL_EXCEPTION;
 			System.err.println(e.getMessage());
 		}
 		catch (InvalidPortException e)
 		{
-			Utilities.exitCode = Utilities.INVALID_PORT_EXCEPTION;
+			utilities.exitCode = Utilities.INVALID_PORT_EXCEPTION;
 			System.err.println(e.getMessage());
+		}
+		finally
+		{
+			if (utilities.exitCode != Utilities.NO_ERROR)
+			{
+				printUsageMessageAndAbortProgram(utilities.exitCode);
+			}
 		}
 		
 		final String transProtocol = examinedArgs[INDEX_OF_TRANS_PROTOCOL];
 		final String port = examinedArgs[INDEX_OF_PORT];
 		
 		ChargenServer chargenServer = null;
-
+		
 		try
 		{
 			switch (transProtocol)
@@ -90,15 +99,15 @@ public class ChargenServerDriver
 		}
 		catch (IOException e)
 		{
-			Utilities.exitCode = Utilities.IO_EXCEPTION;
+			utilities.exitCode = Utilities.IO_EXCEPTION;
 			System.out.println(e.getMessage());
 		}
 		
     	finally
     	{
-    		if (Utilities.exitCode != Utilities.NO_ERROR)
+    		if (utilities.exitCode != Utilities.NO_ERROR)
     		{
-	    		printUsageMessageAndAbortProgram();
+	    		printUsageMessageAndAbortProgram(utilities.exitCode);
     		}
     	}
 	}
@@ -139,13 +148,12 @@ public class ChargenServerDriver
     			{
     				throw new InvalidPortException();
     			}
-    			break;
     			
     		case TRANS_PROTOCOL:
     			transProtocol = args[INDEX_OF_TRANS_PROTOCOL].toUpperCase();
     			
     			if (!(transProtocol.equals("TCP") 
-    							|| transProtocol.equals("UDP")))
+    				|| transProtocol.equals("UDP")))
     			{
     				throw new InvalidTransProtocolException();
     			}
@@ -160,11 +168,11 @@ public class ChargenServerDriver
     	return examinedArgs;
     }
     
-    static void printUsageMessageAndAbortProgram()
+    static void printUsageMessageAndAbortProgram(int exitCode)
     {
     	System.err.println(
-			"\nUsage: java client/ChargenClientDriver <TCP/UDP> [<port>]" +
+			"Usage: java server/ChargenServerDriver <TCP/UDP> [<port>]" +
 			"\nAborting program...");
-    	System.exit(Utilities.exitCode);
+    	System.exit(exitCode);
     }
 }
