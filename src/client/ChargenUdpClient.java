@@ -18,24 +18,24 @@ import java.net.SocketException;
 
 public class ChargenUdpClient extends AbstractChargenClient 
 {
-	private DatagramSocket socket;
+	private DatagramSocket connection;
 	
 	public ChargenUdpClient(InetAddress host, int port)
 		throws SocketException, SecurityException
 	{
 		super(host, port);
 		
-		socket = new DatagramSocket();
+		connection = new DatagramSocket();
 	}
 	
 	@Override
 	public void sendToHost(String flag)
 	{
-		byte[] dataToSend = (flag + "\r\n").getBytes();
+		byte[] sentData = (flag + "\r\n").getBytes();
 		
-		DatagramPacket packetToSend = new DatagramPacket(
-			dataToSend, 
-			dataToSend.length,
+		DatagramPacket sentPacket = new DatagramPacket(
+			sentData, 
+			sentData.length,
 			getHost(), getPort());
 		
 		boolean retry = false;
@@ -44,7 +44,7 @@ public class ChargenUdpClient extends AbstractChargenClient
 			retry = false;
 			try
 			{
-				socket.send(packetToSend);			
+				connection.send(sentPacket);	
 			}
 			catch (IOException e)
 			{
@@ -67,7 +67,7 @@ public class ChargenUdpClient extends AbstractChargenClient
         	retry = false;
         	try
         	{
-        		socket.receive(receivedPacket);        		
+        		connection.receive(receivedPacket);        		
         	}
         	catch (IOException e)
         	{
@@ -85,6 +85,6 @@ public class ChargenUdpClient extends AbstractChargenClient
 	@Override
 	public void closeResources()
 	{
-		socket.close();
+		connection.close();
 	}
 }
