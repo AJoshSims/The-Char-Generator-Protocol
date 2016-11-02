@@ -1,7 +1,6 @@
 package server;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -76,7 +75,6 @@ public class ChargenTcpServer extends AbstractChargenServer
 		throws IOException
 	{
 		Socket connection = null;
-		String receivedData = null;
 		// TODO Do not use infinite loop
 		do
 		{
@@ -85,12 +83,35 @@ public class ChargenTcpServer extends AbstractChargenServer
 		fromClient = new BufferedReader(
 			new InputStreamReader(connection.getInputStream()));
 		
-		receivedData = fromClient.readLine();
+		char[] charsReceived = new char[5];
+		fromClient.read(charsReceived);
 		
-		// TODO do more with this
-		toClient.println("Your message was " + receivedData);
-		toClient.flush();
+		boolean valid = false;
+		int indexOfCurrentChar = 0;
+		int indexOfNextChar = 0;
+		final int indexOfLastChar = 5 - 1;
+		for (
+			indexOfCurrentChar = 0; 
+			indexOfCurrentChar < indexOfLastChar;
+			++indexOfCurrentChar)
+		{
+			indexOfNextChar = indexOfCurrentChar + 1;
+			if (
+				charsReceived[indexOfCurrentChar] == '\r'
+				&& charsReceived[indexOfNextChar] == '\n')
+			{
+				valid = true;
+				break;
+			}
+		}
 		
+		if (valid == true)
+		{
+			while (connection.getOutputStream() != null)
+			{
+				toClient.print(getSource().next());
+			}
+		}
 		
 		connection.close();
 		}

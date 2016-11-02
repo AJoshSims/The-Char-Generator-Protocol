@@ -56,11 +56,13 @@ public class MessnAround
 		
 		
 		
-		String om = "om";
-		Character g = 'g';
+//		String om = "om";
+//		Character g = 'g';
+//		
+//		om += g;
+//		
+//		System.out.println(om);
 		
-		om += g;
 		
-		System.out.println(om);
 	}
 }
