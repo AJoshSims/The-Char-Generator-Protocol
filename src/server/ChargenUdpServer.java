@@ -40,7 +40,7 @@ public class ChargenUdpServer extends AbstractChargenServer
 	@Override
 	public void listen()
 	{
-		byte[] receivedData = new byte[3];
+		byte[] receivedData = new byte[100];
 		DatagramPacket receivedPacket = 
 			new DatagramPacket(receivedData, receivedData.length);
 		
@@ -63,7 +63,7 @@ public class ChargenUdpServer extends AbstractChargenServer
 			}
 			while (retry == true);
 			
-			String receivedString = "yo";
+			String receivedString = "message was " + receivedPacket.getData();
 			
 			byte[] sentData = receivedString.getBytes();
 	//		byte[] sentData = new byte[513];
