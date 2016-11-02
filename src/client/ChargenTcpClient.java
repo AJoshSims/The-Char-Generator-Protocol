@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import common.Utilities;
+
 /**
  * 
  * 
@@ -35,6 +37,13 @@ class ChargenTcpClient extends AbstractChargenClient
 	private BufferedReader fromServer;
 	
 	// Constructors
+	
+	public ChargenTcpClient(InetAddress host)
+		throws IOException, SecurityException
+	{
+		this(host, Utilities.CHARGEN_PORT_NUM);
+	}
+	
 	public ChargenTcpClient(InetAddress host, int port)
 		throws IOException, SecurityException
 	{

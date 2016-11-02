@@ -5,6 +5,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
+import common.Utilities;
+
 /**
  * 
  * 
@@ -20,13 +22,31 @@ public class ChargenUdpServer extends AbstractChargenServer
 	 */
 	DatagramSocket connection;
 	
+	protected ChargenUdpServer()
+		throws SocketException
+	{
+		this(Utilities.CHARGEN_PORT_NUM, new DefactoSource());
+	}
+	
+	protected ChargenUdpServer(int port)
+		throws SocketException
+	{
+		this(port, new DefactoSource());
+	}
+	
+	protected ChargenUdpServer(ChargenSource<?> source)
+		throws SocketException
+	{
+		this(Utilities.CHARGEN_PORT_NUM, source);
+	}
+	
 	/**
 	 * 
 	 * 
 	 * @param port
 	 * @param source
 	 */
-	ChargenUdpServer(int port, ChargenSource<?> source)
+	protected ChargenUdpServer(int port, ChargenSource<?> source)
 		throws SocketException
 	{
 		super(port, source);
@@ -65,6 +85,8 @@ public class ChargenUdpServer extends AbstractChargenServer
 			
 			// TODO no declarations inside of loops >:(
 			String receivedString = "message was " + new String(receivedPacket.getData());
+			receivedString = receivedString.substring(0, receivedString.length() - 3);
+			System.out.println("print result from server: " + receivedString);
 			
 			byte[] sentData = receivedString.getBytes();
 	//		byte[] sentData = new byte[513];

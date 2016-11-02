@@ -35,6 +35,24 @@ public class ChargenTcpServer extends AbstractChargenServer
 	 */
 	private BufferedReader fromClient;
 	
+	protected ChargenTcpServer()
+		throws IOException
+	{
+		this(Utilities.CHARGEN_PORT_NUM, new DefactoSource());
+	}
+	
+	protected ChargenTcpServer(int port)
+		throws IOException
+	{
+		this(port, new DefactoSource());
+	}
+	
+	protected ChargenTcpServer(ChargenSource<?> source)
+		throws IOException
+	{
+		this(Utilities.CHARGEN_PORT_NUM, source);
+	}
+	
 	/**
 	 * 
 	 * 
