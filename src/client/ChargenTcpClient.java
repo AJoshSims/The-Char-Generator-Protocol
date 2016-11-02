@@ -89,6 +89,9 @@ class ChargenTcpClient extends AbstractChargenClient
         	
         	catch (IOException e)
         	{
+        		System.err.println(
+        			e.getMessage() +
+					"\n\nTrying to receive data from server...");
         		response = "";
         	}
         }   
@@ -113,6 +116,9 @@ class ChargenTcpClient extends AbstractChargenClient
     		}
         	catch (IOException e) 
         	{
+        		System.err.println(
+					e.getMessage() +
+					"\n\nTrying to close client-side resources...");
         		retry = true;
     		}
     	}

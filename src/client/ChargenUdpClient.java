@@ -20,6 +20,8 @@ import common.Utilities;
 
 public class ChargenUdpClient extends AbstractChargenClient 
 {
+	private Utilities utilities;
+	
 	private DatagramSocket connection;
 	
 	public ChargenUdpClient(InetAddress host)
@@ -34,6 +36,8 @@ public class ChargenUdpClient extends AbstractChargenClient
 		super(host, port);
 		
 		connection = new DatagramSocket();
+		
+		utilities = new Utilities();
 	}
 	
 	@Override
@@ -56,6 +60,9 @@ public class ChargenUdpClient extends AbstractChargenClient
 			}
 			catch (IOException e)
 			{
+				System.err.println(
+					e.getMessage() +
+					"\n\nTrying to send data to server...");
 				retry = true;
 			}
 		}
@@ -79,6 +86,9 @@ public class ChargenUdpClient extends AbstractChargenClient
         	}
         	catch (IOException e)
         	{
+        		System.err.println(
+        			e.getMessage() +
+        			"\n\nTrying to receive data from server...");
         		retry = true;
         	}
         }
