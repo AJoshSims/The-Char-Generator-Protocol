@@ -85,14 +85,18 @@ public class ChargenServerDriver
 		
 		try
 		{
+			int portInt = Integer.parseInt(port);
 			switch (transProtocol)
 			{
 				case "TCP":
 					chargenServer = new ChargenTcpServer(
-						Integer.parseInt(port), 
+						portInt, 
 						new DefactoSource());
 					break;
-	//				case "UDP"
+				case "UDP":
+					chargenServer = new ChargenUdpServer(
+						portInt, 
+						new DefactoSource());
 			}
 			
 			chargenServer.listen();

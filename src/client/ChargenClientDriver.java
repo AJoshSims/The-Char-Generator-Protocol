@@ -107,20 +107,20 @@ public class ChargenClientDriver
     	final String port = examinedArgs[INDEX_OF_PORT];
     	final String flag = examinedArgs[INDEX_OF_FLAG];
     	
-    	ChargenClient chargenClient = null;
     	try
     	{
+    		ChargenClient chargenClient = null;
+    		InetAddress hostInetAddress = InetAddress.getByName(host);
+    		int portInt = Integer.parseInt(port);
 	    	switch (transProtocol)
 	    	{
 	    		case "TCP":
 	    			chargenClient = new ChargenTcpClient(
-	    				InetAddress.getByName(host), 
-	    				Integer.parseInt(port));
+						hostInetAddress, portInt);
 	    			break;
 	    		case "UDP":
 	    			chargenClient = new ChargenUdpClient(
-	    					InetAddress.getByName(host), 		
-	    					Integer.parseInt(port));
+	    				hostInetAddress, portInt);
 	    	}
 	    	
 	    	chargenClient.sendToHost(flag);
