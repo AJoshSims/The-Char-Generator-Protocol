@@ -1,5 +1,7 @@
 package common;
 
+import java.util.Random;
+
 public class Utilities
 {
 	// Port number information
@@ -71,6 +73,11 @@ public class Utilities
      * The length of an empty array.
      */
 	private static final int EMPTY = 0;
+	
+	/**
+	 * Used to generate random values.
+	 */
+	public static final Random RANDOM = new Random();
 	
 	// Methods
     /**

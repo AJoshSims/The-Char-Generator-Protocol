@@ -20,6 +20,11 @@ public class ChargenUdpServer extends AbstractChargenServer
 	/**
 	 * 
 	 */
+	private static final int NUM_OF_CHARS_TO_SEND_UPPER_BOUND = 513;
+	
+	/**
+	 * 
+	 */
 	DatagramSocket connection;
 	
 	protected ChargenUdpServer()
@@ -78,36 +83,70 @@ public class ChargenUdpServer extends AbstractChargenServer
 				}
 				catch (IOException e)
 				{
+					System.err.println(
+						e.getMessage() +
+						"\n\nTrying to receive data from client...");
 					retry = true;
 				}
 			}
 			while (retry == true);
 			
-			// TODO no declarations inside of loops >:(
-			String receivedString = "message was " + new String(receivedPacket.getData());
-			receivedString = receivedString.substring(0, receivedString.length() - 3);
-			System.out.println("print result from server: " + receivedString);
+			String receivedString = new String(receivedPacket.getData());
 			
-			byte[] sentData = receivedString.getBytes();
-	//		byte[] sentData = new byte[513];
-			
-			DatagramPacket sentPacket = new DatagramPacket(
-				sentData, sentData.length, 
-				receivedPacket.getAddress(), receivedPacket.getPort());
-			
-			do
+			boolean valid = false;
+			int indexOfCurrentChar = 0;
+			int indexOfNextChar = 0;
+			final int indexOfLastChar = receivedString.length() - 1;
+			for (
+				indexOfCurrentChar = 0; 
+				indexOfCurrentChar < indexOfLastChar;
+				++indexOfCurrentChar)
 			{
-				retry = false;
-				try
+				indexOfNextChar = indexOfCurrentChar + 1;
+				if (
+					receivedString.charAt(indexOfCurrentChar) == '\r'
+					&& receivedString.charAt(indexOfNextChar) == '\n')
 				{
-					connection.send(sentPacket);
-				}
-				catch (IOException e)
-				{
-					retry = true;
+					valid = true;
+					break;
 				}
 			}
-			while (retry == true);
+			
+			if (valid == true)
+			{
+				String stringToSend = "";
+				int numOfCharsToSend = 
+					Utilities.RANDOM.nextInt(NUM_OF_CHARS_TO_SEND_UPPER_BOUND);
+				for (
+					int numOfChars = 0; 
+					numOfChars <= numOfCharsToSend;
+					++numOfChars)
+				{
+					stringToSend += getSource().next();
+				}
+				
+				byte[] dataToSend = stringToSend.getBytes();
+				DatagramPacket sentPacket = new DatagramPacket(
+					dataToSend, dataToSend.length, 
+					receivedPacket.getAddress(), receivedPacket.getPort());
+				
+				do
+				{
+					retry = false;
+					try
+					{
+						connection.send(sentPacket);
+					}
+					catch (IOException e)
+					{
+						System.err.println(
+							e.getMessage() +
+							"\n\nTrying to send data to client...");
+						retry = true;
+					}
+				}
+				while (retry == true);	
+			}
 		}
 	}
 }
