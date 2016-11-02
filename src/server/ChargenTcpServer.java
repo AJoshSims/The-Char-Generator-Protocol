@@ -85,12 +85,24 @@ public class ChargenTcpServer extends AbstractChargenServer
 		fromClient = new BufferedReader(
 			new InputStreamReader(connection.getInputStream()));
 		
-		receivedData = fromClient.readLine();
-		
-		// TODO do more with this
-		toClient.println("Your message was " + receivedData);
-		toClient.flush();
-		
+		boolean valid = false;
+		int indexOfCurrentChar = 0;
+		int indexOfNextChar = 0;
+		final int indexOfLastChar = receivedString.lengthS() - 1;
+		for (
+			indexOfCurrentChar = 0; 
+			indexOfCurrentChar < indexOfLastChar;
+			++indexOfCurrentChar)
+		{
+			indexOfNextChar = indexOfCurrentChar + 1;
+			if (
+				receivedString.charAt(indexOfCurrentChar) == '\r'
+				&& receivedString.charAt(indexOfNextChar) == '\n')
+			{
+				valid = true;
+				break;
+			}
+		}
 		
 		connection.close();
 		}
