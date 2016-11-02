@@ -64,5 +64,21 @@ public class MessnAround
 //		System.out.println(om);
 		
 		
+		
+		
+		char[] stuffChars = {'N', '\r', '\n'};
+		
+		String stuffString = new String(stuffChars);
+		
+		String before = stuffString + "that was the string";
+		
+		System.out.println("Before substring: " + before);
+		
+		stuffString = stuffString.substring(0, stuffString.length() - 2);
+		
+		String after = stuffString + "that was the string";
+		
+		System.out.println("After substring: " + after);
+		
 	}
 }
