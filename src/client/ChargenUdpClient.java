@@ -72,7 +72,7 @@ public class ChargenUdpClient extends AbstractChargenClient
 	@Override
     public void printToStream(PrintStream out) 
     {
-        byte[] receivedData = new byte[513];
+        byte[] receivedData = new byte[1000];
         DatagramPacket receivedPacket = new DatagramPacket(
 			receivedData, receivedData.length);
 

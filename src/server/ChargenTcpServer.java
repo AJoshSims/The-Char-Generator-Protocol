@@ -107,27 +107,36 @@ public class ChargenTcpServer extends AbstractChargenServer
 		
 		if (valid == true)
 		{
-			String source = 
-				new String(charsReceived).substring(0, indexOfCurrentChar);
-			switch (source)
-			{
-				case "":
-					// Do nothing (default source is already set).
-					break;
-				case "NAN":
-					changeSource(new NonAlphaNumericSource());
-					break;
-				case "AN":
-					break;
-				case "N":
-					break;
-				case "C":
-					
-			}
+//			String source = 
+//				new String(charsReceived).substring(0, indexOfCurrentChar);
+//			switch (source)
+//			{
+//				case "":
+//					// Do nothing (default source is already set).
+//					break;
+//				case "NAN":
+//					changeSource(new NonAlphaNumericSource());
+//					break;
+//				case "AN":
+//					break;
+//				case "N":
+//					break;
+//				case "C":
+//					
+//			}
 			
+			String stringToSend = "";
 			while (connection.getOutputStream() != null)
 			{
-				toClient.print(getSource().next());
+				for (
+					int numOfItemsInLine = 0; 
+					numOfItemsInLine <= getSource().itemsToSend(); 
+					++numOfItemsInLine)
+				{
+					stringToSend += getSource().next().toString();
+				}
+				stringToSend += "\r\n";
+				toClient.print(stringToSend);
 			}
 		}
 		
