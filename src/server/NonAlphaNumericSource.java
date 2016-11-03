@@ -73,6 +73,9 @@ class NonAlphaNumericSource implements ChargenSource<Character>
 	@Override
 	public Character next()
 	{	
+		char charToSend = (char) nextCharToSend;
+		
+		++nextCharToSend;
 		if (nextCharToSend > LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_04)
 		{
 			nextCharToSend = FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_01;
@@ -96,9 +99,6 @@ class NonAlphaNumericSource implements ChargenSource<Character>
 			nextCharToSend = FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_02;
 		}
 		
-		char charToSend = (char) nextCharToSend;
-		
-		++nextCharToSend;
 		return new Character(charToSend);
 	}
 	
