@@ -139,6 +139,7 @@ public class ChargenTcpServer extends AbstractChargenServer
 				}
 				stringToSend += "\r\n";
 				toClient.print(stringToSend);
+				toClient.flush();
 			}
 		}
 		
