@@ -15,6 +15,21 @@ class DefactoSource implements ChargenSource<Character>
 	/**
 	 * 
 	 */
+	public static final int NUM_OF_PRINTABLE_ASCII_CHARS = 95;
+	
+	/**
+	 * 
+	 */
+	public static final int FIRST_PRINTABLE_ASCII_CHAR = 32;
+	
+	/**
+	 * 
+	 */
+	public static final int LAST_PRINTABLE_ASCII_CHAR = 126;
+	
+	/**
+	 * 
+	 */
 	private int nextCharToSend;
 	
 	/**
@@ -22,7 +37,7 @@ class DefactoSource implements ChargenSource<Character>
 	 */
 	DefactoSource()
 	{
-		nextCharToSend = Utilities.FIRST_PRINTABLE_ASCII_CHAR;
+		nextCharToSend = FIRST_PRINTABLE_ASCII_CHAR;
 	}
 	
 	/**
@@ -34,9 +49,9 @@ class DefactoSource implements ChargenSource<Character>
 		char charToSend = (char) nextCharToSend;
 		
 		++nextCharToSend;
-		if (nextCharToSend > Utilities.LAST_PRINTABLE_ASCII_CHAR)
+		if (nextCharToSend > LAST_PRINTABLE_ASCII_CHAR)
 		{
-			nextCharToSend = Utilities.FIRST_PRINTABLE_ASCII_CHAR;
+			nextCharToSend = FIRST_PRINTABLE_ASCII_CHAR;
 		}
 		
 		return new Character(charToSend);
@@ -48,6 +63,6 @@ class DefactoSource implements ChargenSource<Character>
 	@Override
 	public int itemsToSend()
 	{
-		return Utilities.NUM_OF_PRINTABLE_ASCII_CHARS;
+		return NUM_OF_PRINTABLE_ASCII_CHARS;
 	}
 }

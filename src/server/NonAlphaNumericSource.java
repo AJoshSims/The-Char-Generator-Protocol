@@ -12,13 +12,94 @@ class NonAlphaNumericSource implements ChargenSource<Character>
 {	
 	/**
 	 * 
+	 */
+	public static final int NUM_OF_PRINTABLE_ASCII_NAN_CHARS = 33;
+	
+	/**
+	 * 
+	 */
+	public static final int FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_01 = 32;
+	
+	/**
+	 * 
+	 */
+	public static final int LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_01 = 47;
+	
+	/**
+	 * 
+	 */
+	public static final int FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_02 = 58;
+	
+	/**
+	 * 
+	 */
+	public static final int LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_02 = 64;
+	
+	/**
+	 * 
+	 */
+	public static final int FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_03 = 91;
+	
+	/**
+	 * 
+	 */
+	public static final int LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_03 = 96;
+	
+	/**
+	 * 
+	 */
+	public static final int FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_04 = 123;
+	
+	/**
+	 * 
+	 */
+	public static final int LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_04 = 126;
+	
+	/**
+	 * 
+	 */
+	private int nextCharToSend;
+	
+	NonAlphaNumericSource()
+	{
+		nextCharToSend = FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_01;
+	}
+	
+	/**
+	 * 
 	 * 
 	 * @return
 	 */
 	@Override
 	public Character next()
-	{
-		return new Character((char) 12);
+	{	
+		if (nextCharToSend > LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_04)
+		{
+			nextCharToSend = FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_01;
+		}
+		else if (
+			nextCharToSend > LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_03
+			&& nextCharToSend < FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_04)
+		{
+			nextCharToSend = FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_04;
+		}
+		else if (
+			nextCharToSend > LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_02
+			&& nextCharToSend < FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_03)
+		{
+			nextCharToSend = FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_03;
+		}
+		else if (
+			nextCharToSend > LAST_PRINTABLE_ASCII_NAN_CHAR_GROUP_01
+			&& nextCharToSend < FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_02)
+		{
+			nextCharToSend = FIRST_PRINTABLE_ASCII_NAN_CHAR_GROUP_02;
+		}
+		
+		char charToSend = (char) nextCharToSend;
+		
+		++nextCharToSend;
+		return new Character(charToSend);
 	}
 	
 	/**
@@ -29,6 +110,6 @@ class NonAlphaNumericSource implements ChargenSource<Character>
 	@Override
 	public int itemsToSend()
 	{
-		return -1;
+		return NUM_OF_PRINTABLE_ASCII_NAN_CHARS;
 	}
 }
