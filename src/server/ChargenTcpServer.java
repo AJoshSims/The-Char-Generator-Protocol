@@ -116,12 +116,14 @@ public class ChargenTcpServer extends AbstractChargenServer
 					break;
 				case "NAN":
 					changeSource(new NonAlphaNumericSource());
-//					break;
-//				case "AN":
-//					break;
-//				case "N":
-//					break;
-//				case "C":
+					break;
+				case "AN":
+					changeSource(new AlphaNumericSource());
+					break;
+				case "N":
+					changeSource(new NumericSource());
+					break;
+				case "C":
 					
 			}
 			
