@@ -66,7 +66,6 @@ public class ChargenTcpServer extends AbstractChargenServer
 		welcome = new ServerSocket(port);
 	}
 	
-	// TODO protect against IOException
 	/**
 	 * 
 	 */
@@ -75,7 +74,6 @@ public class ChargenTcpServer extends AbstractChargenServer
 		throws IOException
 	{
 		Socket connection = null;
-		// TODO Do not use infinite loop
 		do
 		{
 		connection = welcome.accept();
@@ -124,13 +122,12 @@ public class ChargenTcpServer extends AbstractChargenServer
 					changeSource(new NumericSource());
 					break;
 				case "C":
-					
+					changeSource(new CardSource());
 			}
 			
 			String stringToSend = "";
 			
-			// TODO not good enough loop condition
-			while (connection.getOutputStream() != null)
+			while (toClient.checkError() == false)
 			{
 				for (
 					int numOfItemsInLine = 0; 
