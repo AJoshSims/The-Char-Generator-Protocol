@@ -126,6 +126,8 @@ public class ChargenTcpServer extends AbstractChargenServer
 //			}
 			
 			String stringToSend = "";
+			
+			// TODO not good enough loop condition
 			while (connection.getOutputStream() != null)
 			{
 				for (

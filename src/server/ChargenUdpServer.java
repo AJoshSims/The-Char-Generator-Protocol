@@ -117,12 +117,24 @@ public class ChargenUdpServer extends AbstractChargenServer
 				String stringToSend = "";
 				int numOfCharsToSend = 
 					Utilities.RANDOM.nextInt(NUM_OF_CHARS_TO_SEND_UPPER_BOUND);
+				
+				int numOfCharsPrepared = 0;
 				for (
-					int numOfChars = 0; 
-					numOfChars <= numOfCharsToSend;
-					++numOfChars)
+					numOfCharsPrepared = 0; 
+					numOfCharsPrepared < numOfCharsToSend - 2;
+					++numOfCharsPrepared)
 				{
 					stringToSend += getSource().next();
+					if ((numOfCharsPrepared % 72) == 0)
+					{
+						stringToSend += "\r\n";
+						numOfCharsPrepared = numOfCharsPrepared + 2;
+					}
+				}
+				
+				if (numOfCharsPrepared < (numOfCharsToSend - 2))
+				{
+					stringToSend += "\r\n";
 				}
 				
 				byte[] dataToSend = stringToSend.getBytes();
