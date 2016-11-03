@@ -68,6 +68,27 @@ public class Utilities
 	 */
 	public int exitCode = NO_ERROR;
 	
+	// ASCII information
+	/**
+	 * 
+	 */
+	public static final int FIRST_PRINTABLE_ASCII_CHAR = 32;
+	
+//	/**
+//	 * 
+//	 */
+//	public static final int SEVENTY_SECOND_PRINTABLE_ASCII_CHAR = 104;
+	
+	/**
+	 * 
+	 */
+	public static final int LAST_PRINTABLE_ASCII_CHAR = 126;
+	
+	/**
+	 * 
+	 */
+	public static final int NUM_OF_PRINTABLE_ASCII_CHARS = 95;
+	
 	// Miscellaneous constants
     /**
      * The length of an empty array.

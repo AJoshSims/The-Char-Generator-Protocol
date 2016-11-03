@@ -1,7 +1,5 @@
 package server;
 
-import java.util.Random;
-
 import common.Utilities;
 
 /**
@@ -16,24 +14,40 @@ class DefactoSource implements ChargenSource<Character>
 {	
 	/**
 	 * 
+	 */
+	private int nextCharToSend;
+	
+	/**
 	 * 
-	 * @return
+	 */
+	DefactoSource()
+	{
+		nextCharToSend = Utilities.FIRST_PRINTABLE_ASCII_CHAR;
+	}
+	
+	/**
+	 * 
 	 */
 	@Override
 	public Character next()
 	{
-		return new Character((char) (Utilities.RANDOM.nextInt(95) + 32));
+		char charToSend = (char) nextCharToSend;
+		
+		++nextCharToSend;
+		if (nextCharToSend > Utilities.LAST_PRINTABLE_ASCII_CHAR)
+		{
+			nextCharToSend = Utilities.FIRST_PRINTABLE_ASCII_CHAR;
+		}
+		
+		return new Character(charToSend);
 	}
 	
-	// TODO I think that this is used for formatting of server response
 	/**
 	 * 
-	 * 
-	 * @return
 	 */
 	@Override
 	public int itemsToSend()
 	{
-		return -1;
+		return Utilities.NUM_OF_PRINTABLE_ASCII_CHARS;
 	}
 }

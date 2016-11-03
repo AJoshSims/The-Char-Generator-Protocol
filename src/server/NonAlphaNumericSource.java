@@ -18,7 +18,7 @@ class NonAlphaNumericSource implements ChargenSource<Character>
 	@Override
 	public Character next()
 	{
-		
+		return new Character((char) 12);
 	}
 	
 	/**
@@ -29,6 +29,6 @@ class NonAlphaNumericSource implements ChargenSource<Character>
 	@Override
 	public int itemsToSend()
 	{
-		
+		return -1;
 	}
 }
