@@ -19,9 +19,7 @@ import common.Utilities;
  */
 
 public class ChargenUdpClient extends AbstractChargenClient 
-{
-	private Utilities utilities;
-	
+{	
 	private DatagramSocket connection;
 	
 	public ChargenUdpClient(InetAddress host)
@@ -36,8 +34,6 @@ public class ChargenUdpClient extends AbstractChargenClient
 		super(host, port);
 		
 		connection = new DatagramSocket();
-		
-		utilities = new Utilities();
 	}
 	
 	@Override
