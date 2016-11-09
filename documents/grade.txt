@@ -1,0 +1,47 @@
+Names(s):Josh S. and Evan A
+
+===================================================================
+Total Points: 92
+===================================================================
+
+Well done guys!
+
+-------------------------------------------------------------------
+Both:13
+-------------------------------------------------------------------
+
+    Style:
+        Comment all fields and methods, (abstract classes and interfaces too) -4
+        You are missing a lot
+
+        main in the driver is too large (<= 40 lines) -2
+
+
+    Design:
+        Do not catch exceptions and ignore them without a comment explaining WHY you get to ignore
+        the exception!! -1
+
+
+-------------------------------------------------------------------
+Clients: 29
+-------------------------------------------------------------------
+
+    Driver: 
+
+    TCP:
+
+
+    UDP:
+        You are sending data to the server when none is required -1
+
+
+-------------------------------------------------------------------
+Servers: 50
+-------------------------------------------------------------------
+    Driver: 
+
+    Sources:
+
+    TCP:
+
+    UDP:
